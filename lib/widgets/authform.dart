@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 enum AuthMode { Signup, Login }
 class AuthCard extends StatefulWidget {
 
@@ -16,17 +18,49 @@ class _AuthCardState extends State<AuthCard> {
     'email':'',
     'phone': '',
     'password': '',
+    'username': '',
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
-    void validateAndSave() {
-    final FormState form = _formKey.currentState;
-    if (form.validate()) {
-      print('Form is valid');
-    } else {
-      print('Form is invalid');
+
+
+
+   Future <void> _submit()async {
+    if (!_formKey.currentState.validate()) {
+      // Invalid!
+      return;
     }
+    _formKey.currentState.save();
+    setState(() {
+      _isLoading = true;
+    });
+    if (_authMode == AuthMode.Login) {
+      await Provider.of<Auth>(context,listen: false).signin(
+
+         _authData['email'],
+         _authData['password']    
+      );
+    } else {
+      // Sign user up
+     await Provider.of<Auth>(context,listen: false).signup(
+        _authData['email'],
+         _authData['password']);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
+
+
+
+  //   void validateAndSave() {
+  //   final FormState form = _formKey.currentState;
+  //   if (form.validate()) {
+  //     print('Form is valid');
+  //   } else {
+  //     print('Form is invalid');
+  //   }
+  // }
  
 
 
@@ -76,7 +110,7 @@ class _AuthCardState extends State<AuthCard> {
                     
                   },
                   onSaved: (value) {
-                    _authData['phone'] = value;
+                    _authData['username'] = value;
                   },
                 ),
 
@@ -99,6 +133,10 @@ class _AuthCardState extends State<AuthCard> {
                       return null;
                       
                     },
+                    onSaved: (value){
+                      _authData['phone'] = value.toString();
+
+                    },
                  ),
                  
                   
@@ -106,7 +144,7 @@ class _AuthCardState extends State<AuthCard> {
                 
 
 
-                if (_authMode == AuthMode.Signup)
+               // if (_authMode == AuthMode.Signup)
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
@@ -162,7 +200,7 @@ class _AuthCardState extends State<AuthCard> {
                   RaisedButton(
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed:validateAndSave ,
+                    onPressed:_submit ,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
