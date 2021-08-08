@@ -12,6 +12,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: AuthScreen(),
+      routes:{
+            AuthScreen.routeName:(ctx) => AuthScreen(),
+           
+          
+          }
     );
   }
 }
