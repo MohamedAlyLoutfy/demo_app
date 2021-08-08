@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+
+import 'package:flutter_complete_guide/widgets/authform.dart';
 
 
 enum AuthMode { Signup, Login }
@@ -16,23 +17,26 @@ class AuthScreen extends StatelessWidget {
       body:Container(
         decoration:BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/images/batman-the-dark-knight-wallpaper-preview.jpg"), fit: BoxFit.cover)) ,
+                image:NetworkImage('https://c4.wallpaperflare.com/wallpaper/542/142/560/batman-the-dark-knight-wallpaper-preview.jpg')
+                 , fit: BoxFit.cover)) ,
         child:  Stack(
         
         children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                
-                colors: [
-                  Colors.yellow,
-                  //Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-              
-                  Color.fromRGBO(255, 0, 0, 0.5).withOpacity(0.1),
+        
+          SingleChildScrollView(
+            child: Container(
+              height: deviceSize.height,
+              width: deviceSize.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                 
+                  Flexible(
+                    flex: deviceSize.width > 600 ? 2 : 1,
+                    child: AuthCard(),
+                  ),
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [0, 1],
               ),
             ),
           ),
