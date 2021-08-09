@@ -8,24 +8,44 @@ class Movies with ChangeNotifier{
 
 List<Movie> _items=[] ;
 
-Future<void> fetchmovies()async{
+Future<void> fetchmovies2()async{
+  for (int i=500; i<510; i++) { 
+    await fetchmovies(i.toString());
+}  
+  // await fetchmovies('550');
+  // await  fetchmovies('500');
+  // await  fetchmovies('501');
+  
 
-final  url= 'https://api.themoviedb.org/3/movie/550?api_key=a2af4ebdd08882549dfd92280c0497ad';
+}
+
+Future<void> fetchmovies(String id)async{
+
+
+final  url= 'https://api.themoviedb.org/3/movie/$id?api_key=a2af4ebdd08882549dfd92280c0497ad';
 final response=await http.get(Uri.parse(url));
+
+//print(json.decode(response2.body));
+String s1=json.decode(response.body)['poster_path'];
+final url1='http://image.tmdb.org/t/p/w185//'+s1;
+//print(url1);
 
       final newMovie = Movie(
           id: json.decode(response.body)['id'].toString(),
           title:json.decode(response.body)['title'] ,
-          imageUrl:null,
+          imageUrl:url1,
          
           description:json.decode(response.body)['overview']
            );
+           
          _items.add(newMovie);
          //notifyListeners();
 
 
 }
-
+ Movie findById(String id){
+    return _items.firstWhere((prod) => prod.id==id,);
+  }
 
   List<Movie> get items{
      

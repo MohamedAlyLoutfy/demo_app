@@ -18,7 +18,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
   @override
   Future <void> didChangeDependencies() async{
      final myMovies= Provider.of<Movies> (context,listen: false); 
-      await myMovies.fetchmovies();
+      await myMovies.fetchmovies2();
        mylastmovies=myMovies.items;
        setState(() {
       
@@ -32,6 +32,16 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
    
    /// final mylastmovies=myMovies.items;
     return  Scaffold(
+      appBar: AppBar(
+        title:Text('MyMovies') ,
+        actions:<Widget> [
+
+       
+         
+             
+
+        ],
+        ),
 
    body: GridView(
         padding: const EdgeInsets.all(25),
