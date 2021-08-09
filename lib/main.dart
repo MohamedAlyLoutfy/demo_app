@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/auth.dart' ;
+import 'package:flutter_complete_guide/providers/movies.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:flutter_complete_guide/screens/movies_overview_screen.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
       value:Auth(),
+      ),
+        ChangeNotifierProvider.value(
+      value:Movies(),
       ),
       
       ],
