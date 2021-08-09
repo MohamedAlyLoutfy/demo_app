@@ -5,6 +5,17 @@ class Auth with ChangeNotifier{
   String _token;
   DateTime _expiryDate;
   String _userId;
+    bool get isAuth{
+    return token !=null;
+
+  }
+ String get token{
+         return _token;
+    
+  }
+  String get userId{
+    return _userId;
+  }
  Future <void> _authenticate(String email,String password,String  urlSegment)async{
     final url='https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBx8DTKG9Dq5xsaMSz7aoxOwtXhJjGoB1c';
     final response=await http.post(Uri.parse(url),
@@ -16,7 +27,11 @@ class Auth with ChangeNotifier{
         },
         )
     );
-    print(json.decode(response.body));
+     final responseData=json.decode(response.body);
+     //print(responseData);
+      _token=responseData['idToken'];
+    _userId=responseData['localId'];
+   
 
   }
 

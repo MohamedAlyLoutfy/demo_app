@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/providers/auth.dart';
+import 'package:flutter_complete_guide/providers/auth.dart' ;
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
+import 'package:flutter_complete_guide/screens/movies_overview_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -11,21 +12,26 @@ class MyApp extends StatelessWidget {
     
     return MultiProvider(
       providers: [
-      ChangeNotifierProvider(
-      create: (ctx)=>Auth(),
-      ),],
-      child: MaterialApp(
+        ChangeNotifierProvider.value(
+      value:Auth(),
+      ),
+      
+      ],
+      child:   Consumer<Auth>(
+        builder:(ctx,auth,_)=>
+       MaterialApp(
         title: 'Movies',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: AuthScreen(),
+        home:auth.isAuth?  AuthScreen() : MoviesOverviewScreen(),
         routes:{
               AuthScreen.routeName:(ctx) => AuthScreen(),
+              MoviesOverviewScreen.routeName:(ctx) => MoviesOverviewScreen(),
              
             
             }
-      ),
+      )),
     );
   }
 }
