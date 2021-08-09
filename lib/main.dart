@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato',
           
           ),
-        home:auth.isAuth?  AuthScreen() : MoviesOverviewScreen(),
+        home:auth.isAuth?   MoviesOverviewScreen() :AuthScreen() ,
         routes:{
               AuthScreen.routeName:(ctx) => AuthScreen(),
               MoviesOverviewScreen.routeName:(ctx) => MoviesOverviewScreen(),

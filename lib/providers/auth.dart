@@ -31,6 +31,7 @@ class Auth with ChangeNotifier{
      //print(responseData);
       _token=responseData['idToken'];
     _userId=responseData['localId'];
+    notifyListeners();
    
 
   }
@@ -48,5 +49,12 @@ class Auth with ChangeNotifier{
 
   }
 
+  void logout(){
+    print('here');
+    _token=null;
+    _userId=null;
+    //_expiryDate=null;
+    notifyListeners();
+  }
 
 }

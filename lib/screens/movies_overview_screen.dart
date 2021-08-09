@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/movie.dart';
+import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/widgets/movie_item.dart';
 import '../providers/movies.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,11 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
       appBar: AppBar(
         title:Text('MyMovies') ,
         actions:<Widget> [
+          FlatButton(
+            onPressed:(){
+              
+              Provider.of<Auth>(context,listen: false).logout();},
+             child: Text('logout'))
 
        
          
