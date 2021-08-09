@@ -5,6 +5,7 @@ import 'package:flutter_complete_guide/providers/movies.dart';
 import 'package:flutter_complete_guide/screens/auth_screen.dart';
 import 'package:flutter_complete_guide/screens/movies_detail_screen.dart';
 import 'package:flutter_complete_guide/screens/movies_overview_screen.dart';
+import 'package:flutter_complete_guide/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
@@ -35,7 +36,18 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato',
           
           ),
-        home:auth.isAuth?   MoviesOverviewScreen() :AuthScreen() ,
+        home:auth.isAuth?   MoviesOverviewScreen()
+        : FutureBuilder(
+                      future: auth.tryAutoLogin(),
+                      builder: (ctx, authResultSnapshot) =>
+                          authResultSnapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? SplashScreen()
+                              : AuthScreen(),
+                    ),
+        
+        
+         
         routes:{
               AuthScreen.routeName:(ctx) => AuthScreen(),
               MoviesOverviewScreen.routeName:(ctx) => MoviesOverviewScreen(),

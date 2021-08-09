@@ -44,7 +44,7 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
 
 }
  Movie findById(String id){
-   print(_items.firstWhere((prod) => prod.id==id,));
+  // print(_items.firstWhere((prod) => prod.id==id,));
     return _items.firstWhere((prod) => prod.id==id,);
   }
 
