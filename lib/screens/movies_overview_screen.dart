@@ -42,10 +42,6 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
               Provider.of<Auth>(context,listen: false).logout();},
              child: Text('logout'))
 
-       
-         
-             
-
         ],
         ),
 
@@ -57,6 +53,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
         catData.title,
         catData.imageUrl,
         catData.description,
+        catData.rating,
 
 
       )).toList(),

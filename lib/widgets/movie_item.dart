@@ -6,8 +6,9 @@ class MovieItem  extends StatelessWidget {
   final String title;
   final String imageUrl;
   final String desctiption;
+  final String rating;
 
-  MovieItem(this.id,this.title,this.imageUrl,this.desctiption);
+  MovieItem(this.id,this.title,this.imageUrl,this.desctiption,this.rating);
  
   @override
   Widget build(BuildContext context) {

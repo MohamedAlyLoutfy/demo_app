@@ -25,7 +25,7 @@ Future<void> fetchmovies(String id)async{
 final  url= 'https://api.themoviedb.org/3/movie/$id?api_key=a2af4ebdd08882549dfd92280c0497ad';
 final response=await http.get(Uri.parse(url));
 
-//print(json.decode(response2.body));
+//print(json.decode(response.body)['vote_average']);
 String s1=json.decode(response.body)['poster_path'];
 final url1='http://image.tmdb.org/t/p/w185//'+s1;
 //print(url1);
@@ -34,8 +34,8 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
           id: json.decode(response.body)['id'].toString(),
           title:json.decode(response.body)['title'] ,
           imageUrl:url1,
-         
-          description:json.decode(response.body)['overview']
+          description:json.decode(response.body)['overview'],
+          rating:json.decode(response.body)['vote_average'].toString()
            );
            
          _items.add(newMovie);
@@ -44,6 +44,7 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
 
 }
  Movie findById(String id){
+   print(_items.firstWhere((prod) => prod.id==id,));
     return _items.firstWhere((prod) => prod.id==id,);
   }
 

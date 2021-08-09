@@ -6,6 +6,8 @@ class Movie {
   final String title;
   final String imageUrl;
   final String description;
+  final String rating;
+  
 
 
   const Movie({
@@ -13,6 +15,7 @@ class Movie {
     @required this.title,
     @required this.imageUrl,
     @required this.description,
+    @required this.rating
 
   });
 }
