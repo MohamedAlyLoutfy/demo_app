@@ -24,8 +24,13 @@ Future<void> fetchmovies2(String userId)async{
  List<Movie> get favoriteItems{
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
+<<<<<<< HEAD
+
+=======
+>>>>>>> 462ffe105cc36ed05dcca9a212c8411d3500f66e
 
 
+Future<void> fetchmovies(String id,String userId)async{
 
 Future<void> fetchmovies(String id,String userId)async{
 

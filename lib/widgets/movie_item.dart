@@ -47,12 +47,22 @@ class MovieItem  extends StatelessWidget {
                   icon: Icon(
                   movie.isFavorite? Icons.favorite
                   :Icons.favorite_border),
+<<<<<<< HEAD
                 
                 color: Theme.of(context).accentColor,
                 onPressed: () {
                   movie.toggleFavoriteState();
                   
                 },   
+=======
+                
+                color: Theme.of(context).accentColor,
+                onPressed: () {
+                  movie.toggleFavoriteState();
+                  
+                },
+                
+>>>>>>> 462ffe105cc36ed05dcca9a212c8411d3500f66e
                 ),
               ),
    
