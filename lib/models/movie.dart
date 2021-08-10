@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 class Movie with ChangeNotifier {
   final String id;
@@ -20,9 +22,19 @@ class Movie with ChangeNotifier {
     this.isFavorite=false,
 
   });
-
-   void toggleFavoriteState (){
-    isFavorite=!isFavorite;
+   void _setFavValue(bool newValue){
+    isFavorite=newValue;
     notifyListeners();
   }
-}
+
+   Future <void> toggleFavoriteState ()async{
+ 
+    isFavorite=!isFavorite;
+    notifyListeners();
+  
+
+
+    }
+  }
+  
+

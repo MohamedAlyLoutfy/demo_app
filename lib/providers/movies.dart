@@ -1,16 +1,19 @@
 
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import '../models/movie.dart';
 class Movies with ChangeNotifier{
 
 
 List<Movie> _items=[] ;
 
-Future<void> fetchmovies2()async{
+
+Future<void> fetchmovies2(String userId)async{
   for (int i=500; i<510; i++) { 
-    await fetchmovies(i.toString());
+    await fetchmovies(i.toString(),userId);
 }  
   // await fetchmovies('550');
   // await  fetchmovies('500');
@@ -18,9 +21,13 @@ Future<void> fetchmovies2()async{
   
 
 }
+ List<Movie> get favoriteItems{
+    return _items.where((prodItem) => prodItem.isFavorite).toList();
+  }
 
-Future<void> fetchmovies(String id)async{
 
+
+Future<void> fetchmovies(String id,String userId)async{
 
 final  url= 'https://api.themoviedb.org/3/movie/$id?api_key=a2af4ebdd08882549dfd92280c0497ad';
 final response=await http.get(Uri.parse(url));
@@ -39,6 +46,10 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
            );
            
          _items.add(newMovie);
+
+
+
+          
          //notifyListeners();
 
 
@@ -53,6 +64,8 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
     return[..._items];
   }
 
+  
+  }
 
 
 
@@ -61,4 +74,6 @@ final url1='http://image.tmdb.org/t/p/w185//'+s1;
 
 
 
-}
+
+
+

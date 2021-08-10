@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/models/movie.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
+import 'package:flutter_complete_guide/widgets/app_drawer.dart';
 import 'package:flutter_complete_guide/widgets/movie_item.dart';
 import '../providers/movies.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,8 @@ import 'package:provider/provider.dart';
 
 class MoviesOverviewScreen  extends StatefulWidget {
   static const routeName = '/movies';
+  final bool showfavs;
+MoviesOverviewScreen(this.showfavs);
 
   @override
   _MoviesOverviewScreenState createState() => _MoviesOverviewScreenState();
@@ -19,8 +22,11 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
   @override
   Future <void> didChangeDependencies() async{
      final myMovies= Provider.of<Movies> (context,listen: false); 
-      await myMovies.fetchmovies2();
-       mylastmovies=myMovies.items;
+     final userId= Provider.of<Auth> (context,listen: false).userId; 
+      await myMovies.fetchmovies2(userId);
+       mylastmovies=widget.showfavs ?myMovies.favoriteItems:myMovies.items;
+
+       print(('heree'));
        setState(() {
       
        });
@@ -44,6 +50,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
 
         ],
         ),
+        drawer: AppDrawer(),
 
    body: GridView(
         padding: const EdgeInsets.all(25),
