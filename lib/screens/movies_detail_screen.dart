@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/movies.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -19,6 +20,26 @@ class MovieDetailScreen extends StatelessWidget {
      listen: false,
      ).findById(movietId);
     return Scaffold(
+      appBar: AppBar(
+        title:Text('MyMovies') ,
+        actions:<Widget> [
+          IconButton(
+      icon: Icon(loadedmovie.isFavorite?
+        Icons.favorite:Icons.favorite_border,
+        color: Colors.red,
+      ),
+      onPressed: () {
+        // do something
+      },
+    ),
+          FlatButton(
+            onPressed:(){
+              
+              Provider.of<Auth>(context,listen: false).logout();},
+             child: Text('logout'))
+
+        ],
+        ) ,
      
       body: CustomScrollView(
         slivers:<Widget> [

@@ -11,14 +11,16 @@ class MovieItem  extends StatelessWidget {
   final String desctiption;
   final String rating;
   final String link;
+  bool isfav;
 
-  MovieItem(this.id,this.title,this.imageUrl,this.desctiption,this.rating,this.link);
+  MovieItem(this.id,this.title,this.imageUrl,this.desctiption,this.rating,this.link,this.isfav);
  
   @override
   Widget build(BuildContext context) {
     final movie =Provider.of<Movie>(context,listen: false);
     final userdata =Provider.of<Auth>(context,listen: false);
     return ClipRRect(
+      
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
           child: GestureDetector(

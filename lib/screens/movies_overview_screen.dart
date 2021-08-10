@@ -63,9 +63,9 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
           catData.imageUrl,
           catData.description,
           catData.rating,
-          catData.link
+          catData.link,
+          catData.isFavorite
           
-      
       
         ),
       )).toList(),
