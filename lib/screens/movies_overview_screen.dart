@@ -48,14 +48,17 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
    body: GridView(
         padding: const EdgeInsets.all(25),
       children:mylastmovies
-      .map((catData)=> MovieItem(
-        catData.id,
-        catData.title,
-        catData.imageUrl,
-        catData.description,
-        catData.rating,
-
-
+      .map((catData)=> ChangeNotifierProvider.value(
+        value: catData,
+        child: MovieItem(
+          catData.id,
+          catData.title,
+          catData.imageUrl,
+          catData.description,
+          catData.rating,
+      
+      
+        ),
       )).toList(),
 
 
