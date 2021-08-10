@@ -18,9 +18,16 @@ MoviesOverviewScreen(this.showfavs);
 
 class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
    List<Movie> mylastmovies=[];
+   var _isLoading=false;
+    var _isInit=true;
   
   @override
   Future <void> didChangeDependencies() async{
+    if(_isInit){
+      setState(() {
+        _isLoading=true;
+      });
+    }
      final myMovies= Provider.of<Movies> (context,listen: false); 
      final userId= Provider.of<Auth> (context,listen: false).userId; 
       await myMovies.fetchmovies2(userId);
@@ -28,6 +35,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
 
        print(('heree'));
        setState(() {
+         _isLoading=false;
       
        });
     super.didChangeDependencies();
@@ -52,7 +60,11 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
         ),
         drawer: AppDrawer(),
 
-   body: GridView(
+   body:_isLoading?  Center(
+          child: CircularProgressIndicator()
+          ,
+        )
+   : GridView(
         padding: const EdgeInsets.all(25),
       children:mylastmovies
       .map((catData)=> ChangeNotifierProvider.value(

@@ -47,7 +47,7 @@ class MovieDetailScreen extends StatelessWidget {
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(loadedmovie.title),
+              
               background:Hero(
                 tag: loadedmovie.id,
 
@@ -59,12 +59,17 @@ class MovieDetailScreen extends StatelessWidget {
 
               ),
           ),
+          
+          
           SliverList(
             delegate:SliverChildListDelegate([
               SizedBox(height: 10,),
+              Container(child: Text(loadedmovie.title,
+              style: TextStyle(fontSize: 30),textAlign: TextAlign.center,), ),
          
             SizedBox(height: 10,),
               Container(
+                
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
                 child: Text(
@@ -112,8 +117,11 @@ class MovieDetailScreen extends StatelessWidget {
               SizedBox(height: 10,),
               Center(
           child: new RichText(
+            
             text: new TextSpan(
+              
               children: [
+                
                 new TextSpan(
                   text: 'To go to trailer, ',
                   style: new TextStyle(color: Colors.black),
