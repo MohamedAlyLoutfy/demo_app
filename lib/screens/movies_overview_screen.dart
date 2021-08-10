@@ -38,6 +38,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
          _isLoading=false;
       
        });
+       _isInit=false;
     super.didChangeDependencies();
   }
   @override
