@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -24,21 +23,15 @@ Future<void> fetchmovies2(String userId)async{
  List<Movie> get favoriteItems{
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 462ffe105cc36ed05dcca9a212c8411d3500f66e
 
 
-Future<void> fetchmovies(String id,String userId)async{
 
 Future<void> fetchmovies(String id,String userId)async{
 
 final  url= 'https://api.themoviedb.org/3/movie/$id?api_key=a2af4ebdd08882549dfd92280c0497ad';
 final response=await http.get(Uri.parse(url));
 
-
-//print(json.decode(response.body));
+//print(json.decode(response.body)['vote_average']);
 String s1=json.decode(response.body)['poster_path'];
 final url1='http://image.tmdb.org/t/p/w185//'+s1;
 final movid=json.decode(response.body)['id'].toString();
@@ -48,7 +41,6 @@ String jsonsDataString = response2.body.toString();
 final jsonData = jsonDecode(jsonsDataString);
 String link='https://www.youtube.com/watch?v='+jsonData['results'][0]['key'];
 ///print(link);
-
 //print(url1);
 
       final newMovie = Movie(
@@ -63,6 +55,7 @@ String link='https://www.youtube.com/watch?v='+jsonData['results'][0]['key'];
  
 
          _items.add(newMovie);
+
 
 
 
@@ -83,14 +76,3 @@ String link='https://www.youtube.com/watch?v='+jsonData['results'][0]['key'];
 
   
   }
-
-
-
-
-
-
-
-
-
-
-
