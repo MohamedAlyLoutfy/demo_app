@@ -38,13 +38,16 @@ class _AuthCardState extends State<AuthCard> {
       await Provider.of<Auth>(context,listen: false).signin(
 
          _authData['email'],
-         _authData['password']    
+         _authData['password'] ,
+        _authData['phone']
       );
     } else {
       // Sign user up
      await Provider.of<Auth>(context,listen: false).signup(
         _authData['email'],
-         _authData['password']);
+         _authData['password'],
+         _authData['phone']
+         );
     }
     setState(() {
       _isLoading = false;

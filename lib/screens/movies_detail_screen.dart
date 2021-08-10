@@ -6,70 +6,71 @@ import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 class MovieDetailScreen extends StatelessWidget {
   static const routeName = '/details';
-  
 
   @override
-  Widget  build(BuildContext context) {
-    final movietId=ModalRoute.of(context).settings.arguments as String;
+  Widget build(BuildContext context) {
+    final movietId = ModalRoute.of(context).settings.arguments as String;
     //print(movietId);
 
-      final loadedmovie= Provider.of<Movies>(
-     context,
-     listen: false,
-     ).findById(movietId);
+    final loadedmovie = Provider.of<Movies>(
+      context,
+      listen: false,
+    ).findById(movietId);
     return Scaffold(
       appBar: AppBar(
-        title:Text('MyMovies') ,
-        actions:<Widget> [
+        title: Text('MyMovies'),
+        actions: <Widget>[
           IconButton(
-      icon: Icon(loadedmovie.isFavorite?
-        Icons.favorite:Icons.favorite_border,
-        color: Colors.red,
-      ),
-      onPressed: () {
-        // do something
-      },
-    ),
+            icon: Icon(
+              loadedmovie.isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              // do something
+            },
+          ),
           FlatButton(
-            onPressed:(){
-              
-              Provider.of<Auth>(context,listen: false).logout();},
-             child: Text('logout'))
-
+              onPressed: () {
+                Provider.of<Auth>(context, listen: false).logout();
+              },
+              child: Text('logout'))
         ],
-        ) ,
-     
+      ),
       body: CustomScrollView(
-        slivers:<Widget> [
+        slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              
-              background:Hero(
+              background: Hero(
                 tag: loadedmovie.id,
-
-                child: Image.network(loadedmovie.imageUrl,
-                fit: BoxFit.cover,
-                
+                child: Image.network(
+                  loadedmovie.imageUrl,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                child: Text(
+                  loadedmovie.title,
+                  style: TextStyle(fontSize: 30),
+                  textAlign: TextAlign.center,
                 ),
               ),
 
+              SizedBox(
+                height: 10,
               ),
-          ),
-          
-          
-          SliverList(
-            delegate:SliverChildListDelegate([
-              SizedBox(height: 10,),
-              Container(child: Text(loadedmovie.title,
-              style: TextStyle(fontSize: 30),textAlign: TextAlign.center,), ),
-         
-            SizedBox(height: 10,),
               Container(
-                
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
                 child: Text(
@@ -90,7 +91,7 @@ class MovieDetailScreen extends StatelessWidget {
                 ),
               ),
 
-             RatingBar(
+              RatingBar(
                 initialRating: (double.parse(loadedmovie.rating) * 5) / 10,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
@@ -114,37 +115,30 @@ class MovieDetailScreen extends StatelessWidget {
                   print(rating);
                 },
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Center(
-          child: new RichText(
-            
-            text: new TextSpan(
-              
-              children: [
-                
-                new TextSpan(
-                  text: 'To go to trailer, ',
-                  style: new TextStyle(color: Colors.black),
+                child: new RichText(
+                  text: new TextSpan(
+                    children: [
+                      new TextSpan(
+                        text: 'To go to trailer, ',
+                        style: new TextStyle(color: Colors.black),
+                      ),
+                      new TextSpan(
+                        text: 'Click Here',
+                        style: new TextStyle(color: Colors.blue),
+                        recognizer: new TapGestureRecognizer()
+                          ..onTap = () {
+                            launch(loadedmovie.link);
+                          },
+                      ),
+                    ],
+                  ),
                 ),
-                new TextSpan(
-                  text: 'Click Here',
-                  style: new TextStyle(color: Colors.blue),
-                  recognizer: new TapGestureRecognizer()
-                    ..onTap = () { launch(loadedmovie.link);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      
-
-
-              
-
-
-
-            ]) ,
+              ),
+            ]),
           ),
         ],
       ),

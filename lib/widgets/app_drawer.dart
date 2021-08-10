@@ -18,24 +18,7 @@ class AppDrawer  extends StatelessWidget {
             automaticallyImplyLeading: false,
             
             ),
-            Divider(),
-            ListTile(
-              leading:Icon(Icons.star) ,
-              title:Text('show only favs') ,
-              onTap: (){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MoviesOverviewScreen(true)));
-                
-              },
-              ),
-              Divider(),
-            ListTile(
-              leading:Icon(Icons.content_copy) ,
-              title:Text('show all') ,
-              onTap: (){
-              
-               Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => MoviesOverviewScreen(false)));
-              },
-              ),
+            
                
                  Divider(),
             ListTile(
