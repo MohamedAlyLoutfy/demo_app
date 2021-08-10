@@ -1,7 +1,10 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/providers/movies.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 class MovieDetailScreen extends StatelessWidget {
   static const routeName = '/details';
   
@@ -84,7 +87,32 @@ class MovieDetailScreen extends StatelessWidget {
                 onRatingUpdate: (rating) {
                   print(rating);
                 },
-              )
+              ),
+              SizedBox(height: 10,),
+              Center(
+          child: new RichText(
+            text: new TextSpan(
+              children: [
+                new TextSpan(
+                  text: 'To go to trailer, ',
+                  style: new TextStyle(color: Colors.black),
+                ),
+                new TextSpan(
+                  text: 'Click Here',
+                  style: new TextStyle(color: Colors.blue),
+                  recognizer: new TapGestureRecognizer()
+                    ..onTap = () { launch(loadedmovie.link);
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      
+
+
+              
+
 
 
             ]) ,

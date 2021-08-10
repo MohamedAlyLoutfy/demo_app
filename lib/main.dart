@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Lato',
           
           ),
-        home:auth.isAuth?   MoviesOverviewScreen()
+        home:auth.isAuth?   MoviesOverviewScreen(false)
         : FutureBuilder(
                       future: auth.tryAutoLogin(),
                       builder: (ctx, authResultSnapshot) =>
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
          
         routes:{
               AuthScreen.routeName:(ctx) => AuthScreen(),
-              MoviesOverviewScreen.routeName:(ctx) => MoviesOverviewScreen(),
+              MoviesOverviewScreen.routeName:(ctx) => MoviesOverviewScreen(false),
               MovieDetailScreen.routeName:(ctx) => MovieDetailScreen(),
              
             
