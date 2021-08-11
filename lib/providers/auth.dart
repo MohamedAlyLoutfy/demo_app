@@ -50,7 +50,9 @@ class Auth with ChangeNotifier {
         Duration(
           seconds: int.parse(responseData['expiresIn']),
         ),
+        
       );
+    
       if (urlSegment == 'signUp') {
         onregister(password, phone);
       }
@@ -66,6 +68,7 @@ class Auth with ChangeNotifier {
     } catch (error) {
       throw error;
     }
+    
   }
 
   Future<void> signup(String email, String password, String phone) async {
@@ -136,4 +139,6 @@ class Auth with ChangeNotifier {
     });
     return a;
   }
+
+
 }

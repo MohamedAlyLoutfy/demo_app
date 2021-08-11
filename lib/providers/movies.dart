@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import '../database/db.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import '../models/movie.dart';
@@ -15,12 +16,14 @@ class Movies with ChangeNotifier {
   List<Movie> _items = [];
 
   Future<void> fetchmovies2(String userId) async {
+    //await getlocal();
     if (_items.isEmpty == false) {
       return;
     }
     for (int i = 500; i < 510; i++) {
       await fetchmovies(i.toString(), userId);
     }
+   // getlocal();
   }
 
   List<Movie> get favoriteItems {
@@ -50,7 +53,7 @@ class Movies with ChangeNotifier {
         'https://demoapp-90b94-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
     final favoriteResponse = await http.get(Uri.parse(url2));
     final favoriteData = json.decode(favoriteResponse.body);
-
+    //print(favoriteData[id]);
     final newMovie = Movie(
         id: json.decode(response.body)['id'].toString(),
         title: json.decode(response.body)['title'],
@@ -64,6 +67,11 @@ class Movies with ChangeNotifier {
                 false);
 
     _items.add(newMovie);
+    if (favoriteData[id] == true) {
+      await savelocal(id, userId, 'true');
+    } else {
+      await savelocal(id, userId, 'false');
+    }
 
     //notifyListeners();
   }
@@ -77,5 +85,17 @@ class Movies with ChangeNotifier {
 
   List<Movie> get items {
     return [..._items];
+  }
+
+  Future<void> savelocal(String movieid, String userid, String isfav) async {
+    await DBHelper.insert(
+        'user_movies', {'movieid': movieid, 'userid': userId, 'isfav': isfav});
+  }
+
+  Future<void> getlocal() async {
+    final dataList = await DBHelper.getData('user_movies');
+    //print('locaall');
+
+    //print(dataList);
   }
 }
