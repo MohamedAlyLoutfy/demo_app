@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Auth(),
         ),
+
         //   ChangeNotifierProvider.value(
         // value:Movies(),
         // ),

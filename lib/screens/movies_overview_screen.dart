@@ -38,16 +38,15 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
     }
     final myMovies = Provider.of<Movies>(context, listen: false);
     final userId = Provider.of<Auth>(context, listen: false).userId;
-   
+
     await myMovies.fetchmovies2(userId);
-    
+
     // mylastmovies=_showfavs ?myMovies.favoriteItems:myMovies.items;
 
     setState(() {
       _isLoading = false;
     });
     _isInit = false;
-    
   }
 
   @override

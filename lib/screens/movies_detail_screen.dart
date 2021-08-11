@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/movie.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/movies.dart';
 import 'package:provider/provider.dart';
@@ -7,18 +10,32 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MovieDetailScreen extends StatelessWidget {
+class MovieDetailScreen extends StatefulWidget {
   static const routeName = '/details';
+
+  @override
+  _MovieDetailScreenState createState() => _MovieDetailScreenState();
+}
+
+class _MovieDetailScreenState extends State<MovieDetailScreen> {
+  var _isfav;
+
+  void _togglefavstate() {
+    setState(() {
+      _isfav = !_isfav;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final movietId = ModalRoute.of(context).settings.arguments as String;
-    //print(movietId);
+    final userdata = Provider.of<Auth>(context, listen: false);
 
     final loadedmovie = Provider.of<Movies>(
       context,
       listen: false,
     ).findById(movietId);
+    _isfav = loadedmovie.isFavorite;
     return Scaffold(
       appBar: AppBar(
         title: Text('MyMovies'),
@@ -29,14 +46,13 @@ class MovieDetailScreen extends StatelessWidget {
               color: Colors.red,
             ),
             onPressed: () {
-              // do something
+              loadedmovie.toggleFavoriteState(userdata.token, userdata.userId);
+              setState(() {
+                _togglefavstate();
+              });
             },
           ),
-          FlatButton(
-              onPressed: () {
-                Provider.of<Auth>(context, listen: false).logout();
-              },
-              child: Text('logout'))
+         
         ],
       ),
       body: CustomScrollView(
@@ -111,7 +127,7 @@ class MovieDetailScreen extends StatelessWidget {
                   ),
                 ),
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-               onRatingUpdate: (_){},
+                onRatingUpdate: (_) {},
               ),
               SizedBox(
                 height: 10,
