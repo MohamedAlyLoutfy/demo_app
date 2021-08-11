@@ -23,32 +23,49 @@ class Auth with ChangeNotifier {
       String email, String password, String urlSegment, String phone) async {
     final url =
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyBx8DTKG9Dq5xsaMSz7aoxOwtXhJjGoB1c';
-    final response = await http.post(Uri.parse(url),
-        body: json.encode(
-          {
-            'email': email,
-            'password': password,
-            'returnSecureToken': true,
-          },
-        ));
-    print(phone);
-    final responseData = json.decode(response.body);
-    //print(responseData);
-    _token = responseData['idToken'];
-    _userId = responseData['localId'];
-    _expiryDate = DateTime.now().add(
-      Duration(
-        seconds: int.parse(responseData['expiresIn']),
-      ),
-    );
-    notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    final userData = json.encode({
-      'token': _token,
-      'userId': _userId,
-      'expiryDate': _expiryDate.toIso8601String()
-    });
-    prefs.setString('userData', userData);
+    try {
+      final response = await http.post(Uri.parse(url),
+          body: json.encode(
+            {
+              'email': email,
+              'password': password,
+              'returnSecureToken': true,
+            },
+          ));
+      //print(phone);
+      final responseData = json.decode(response.body);
+      //print(responseData);
+      if (urlSegment == 'signInWithPassword') {
+        var a = await onlogin(
+            phone, responseData['idToken'], responseData['localId']);
+        if (a == 'wrong') {
+          print('wrong number');
+          return;
+        }
+      }
+
+      _token = responseData['idToken'];
+      _userId = responseData['localId'];
+      _expiryDate = DateTime.now().add(
+        Duration(
+          seconds: int.parse(responseData['expiresIn']),
+        ),
+      );
+      if (urlSegment == 'signUp') {
+        onregister(password, phone);
+      }
+
+      notifyListeners();
+      final prefs = await SharedPreferences.getInstance();
+      final userData = json.encode({
+        'token': _token,
+        'userId': _userId,
+        'expiryDate': _expiryDate.toIso8601String()
+      });
+      prefs.setString('userData', userData);
+    } catch (error) {
+      throw error;
+    }
   }
 
   Future<void> signup(String email, String password, String phone) async {
@@ -87,5 +104,36 @@ class Auth with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     // prefs.remove('userData');
     prefs.clear();
+  }
+
+  Future<void> onregister(String password, String phone) async {
+    final url =
+        'https://demoapp-90b94-default-rtdb.firebaseio.com/users.json?auth=$_token';
+    print('herelogup');
+    await http.post(Uri.parse(url),
+        body: json
+            .encode({'userid': _userId, 'phone': phone, 'password': password}));
+  }
+
+  Future<String> onlogin(String phone, String token, String userId) async {
+    final filterString = 'orderBy="userid"&equalTo="$userId"';
+    final url =
+        'https://demoapp-90b94-default-rtdb.firebaseio.com/users.json?auth=$token&$filterString';
+    print('herelogup');
+    final response = await http.get(Uri.parse(url));
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    //print(extractedData);
+    String a;
+    extractedData.forEach((prodId, prodData) {
+      //print(prodData['phone']);
+      if (prodData['phone'].toString() == phone) {
+        // print('correct');
+        a = 'correct';
+      } else {
+        // print('wrong');
+        a = 'wrong';
+      }
+    });
+    return a;
   }
 }

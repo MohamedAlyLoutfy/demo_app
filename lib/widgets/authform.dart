@@ -128,6 +128,7 @@ class _AuthCardState extends State<AuthCard> {
                           initialCountryCode: 'IN',
                          onChanged: (phone) {
                          print(phone.completeNumber);
+                         _authData['phone'] = phone.completeNumber.toString();
                          },
                       validator: (value) {
                       if (value.isEmpty ) {
@@ -137,7 +138,7 @@ class _AuthCardState extends State<AuthCard> {
                       
                     },
                     onSaved: (value){
-                      _authData['phone'] = value.toString();
+                     // _authData['phone'] = value.toString();
 
                     },
                  ),
