@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 enum FilterOptions {
   Favorties,
   All,
+  Sort,
 }
 
 class MoviesOverviewScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
   var _isLoading = false;
   var _isInit = true;
   var _showfavs = false;
+  var _sort=false;
   @override
   void initState() {
     start();
@@ -53,6 +55,7 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
   Widget build(BuildContext context) {
     final myMovies = Provider.of<Movies>(context, listen: false);
     mylastmovies = _showfavs ? myMovies.favoriteItems : myMovies.items;
+    _sort? mylastmovies.sort((a, b) => b.rating.compareTo(a.rating)):mylastmovies=mylastmovies;
 
     /// final mylastmovies=myMovies.items;
     return Scaffold(
@@ -62,6 +65,9 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
+                if(selectedValue==FilterOptions.Sort){
+                  _sort=!_sort;
+                }
                 if (selectedValue == FilterOptions.Favorties) {
                   _showfavs = true;
                 } else {
@@ -77,6 +83,8 @@ class _MoviesOverviewScreenState extends State<MoviesOverviewScreen> {
                   child: Text('Only favorties'),
                   value: FilterOptions.Favorties),
               PopupMenuItem(child: Text('show all'), value: FilterOptions.All),
+              PopupMenuItem(child: Text('Sort'), value: FilterOptions.Sort),
+
             ],
           ),
           FlatButton(
