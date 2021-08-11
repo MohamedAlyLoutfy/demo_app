@@ -4,7 +4,7 @@ import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/screens/movies_detail_screen.dart';
 import 'package:provider/provider.dart';
 
-class MovieItem  extends StatelessWidget {
+class MovieItem extends StatelessWidget {
   final String id;
   final String title;
   final String imageUrl;
@@ -13,58 +13,50 @@ class MovieItem  extends StatelessWidget {
   final String link;
   bool isfav;
 
-  MovieItem(this.id,this.title,this.imageUrl,this.desctiption,this.rating,this.link,this.isfav);
- 
+  MovieItem(this.id, this.title, this.imageUrl, this.desctiption, this.rating,
+      this.link, this.isfav);
+
   @override
   Widget build(BuildContext context) {
-    final movie =Provider.of<Movie>(context,listen: false);
-    final userdata =Provider.of<Auth>(context,listen: false);
+    final movie = Provider.of<Movie>(context, listen: false);
+    final userdata = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
-      
-        borderRadius: BorderRadius.circular(10),
-        child: GridTile(
-          child: GestureDetector(
-            onTap: (){
-              Navigator.of(context)
-              .pushNamed(
-                MovieDetailScreen.routeName,
-                arguments:id, );
-            
-                },
-            child:Hero(
-              tag: Text('id'),
-              child: FadeInImage(
-                placeholder:  NetworkImage(
-                  imageUrl),
-                  image:NetworkImage(imageUrl),
-                  fit: BoxFit.cover,
-                  ),
+      borderRadius: BorderRadius.circular(10),
+      child: GridTile(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              MovieDetailScreen.routeName,
+              arguments: id,
+            );
+          },
+          child: Hero(
+            tag: Text('id'),
+            child: FadeInImage(
+              placeholder: NetworkImage(imageUrl),
+              image: NetworkImage(imageUrl),
+              fit: BoxFit.cover,
             ),
-             
-            ),
-          footer: GridTileBar(
-            backgroundColor: Colors.black87,
-              leading:Consumer<Movie>(
-                builder: (ctx,movie,_)=>  IconButton(
-                  icon: Icon(
-                  movie.isFavorite? Icons.favorite
-                  :Icons.favorite_border),
-                
-                color: Theme.of(context).accentColor,
-                onPressed: () {
-                  movie.toggleFavoriteState(userdata.token,userdata.userId);
-                  
-                },
-                
-                ),
-              ),
-   
-            title: Text(
-              title,
-              textAlign: TextAlign.center,
-              ),
-              ),
+          ),
         ),
+        footer: GridTileBar(
+          backgroundColor: Colors.black87,
+          leading: Consumer<Movie>(
+            builder: (ctx, movie, _) => IconButton(
+              icon: Icon(
+                  movie.isFavorite ? Icons.favorite : Icons.favorite_border),
+              color: Theme.of(context).accentColor,
+              onPressed: () {
+                movie.toggleFavoriteState(userdata.token, userdata.userId);
+              },
+            ),
+          ),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
     );
   }
 }

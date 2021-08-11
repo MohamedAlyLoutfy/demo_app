@@ -52,7 +52,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
               });
             },
           ),
-         
         ],
       ),
       body: CustomScrollView(

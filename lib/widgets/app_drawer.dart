@@ -5,44 +5,28 @@ import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 
-class AppDrawer  extends StatelessWidget {
-  
-
+class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
-        children:<Widget> [
+        children: <Widget>[
           AppBar(
             title: Text('Hello friend'),
             automaticallyImplyLeading: false,
-            
-            ),
-            
-               
-                 Divider(),
-            ListTile(
-              leading:Icon(Icons.exit_to_app) ,
-              title:Text('Logout') ,
-              onTap: (){
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed('/');
-                //Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
-               Provider.of<Auth>(context,listen: false).logout();
-              },
-
-              ),
-
-
-
-
-
-
-        ]
-        
-        
-        ,),
-      
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed('/');
+              Provider.of<Auth>(context, listen: false).logout();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

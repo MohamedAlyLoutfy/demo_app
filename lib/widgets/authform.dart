@@ -4,10 +4,10 @@ import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
+
 enum AuthMode { Signup, Login }
+
 class AuthCard extends StatefulWidget {
-
-
   @override
   _AuthCardState createState() => _AuthCardState();
 }
@@ -16,7 +16,7 @@ class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
-    'email':'',
+    'email': '',
     'phone': '',
     'password': '',
     'username': '',
@@ -24,9 +24,7 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-
-
-   Future <void> _submit()async {
+  Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -35,49 +33,37 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    try{
-    if (_authMode == AuthMode.Login) {
-      await Provider.of<Auth>(context,listen: false).signin(
-
-         _authData['email'],
-         _authData['password'] ,
-        _authData['phone']
-      );
-    } else {
-      // Sign user up
-     await Provider.of<Auth>(context,listen: false).signup(
-        _authData['email'],
-         _authData['password'],
-         _authData['phone']
-         );
-    }} on HttpException catch(error){
-      var errorMessage='Authentication failed';
-      if(error.toString().contains('EMAIL_EXISTS')){
-        errorMessage='This email address is already in use';
-      }else if (error.toString().contains('INVALID_EMAIL')){
-        errorMessage='This is not a valid email address';
+    try {
+      if (_authMode == AuthMode.Login) {
+        await Provider.of<Auth>(context, listen: false).signin(
+            _authData['email'], _authData['password'], _authData['phone']);
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false).signup(
+            _authData['email'], _authData['password'], _authData['phone']);
       }
-      else if (error.toString().contains('WEAK_PASSWORD')){
-        errorMessage='This password is too weak';
-      }
-      else if (error.toString().contains('EMAIL_NOT_FOUND')){
-        errorMessage='Could not find a user with that email';
-      }
-      else if (error.toString().contains('INVALID_PASSWORD')){
-        errorMessage='Invalid password';
+    } on HttpException catch (error) {
+      var errorMessage = 'Authentication failed';
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        errorMessage = 'This email address is already in use';
+      } else if (error.toString().contains('INVALID_EMAIL')) {
+        errorMessage = 'This is not a valid email address';
+      } else if (error.toString().contains('WEAK_PASSWORD')) {
+        errorMessage = 'This password is too weak';
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        errorMessage = 'Could not find a user with that email';
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        errorMessage = 'Invalid password';
       }
       _showErrorDialog(errorMessage);
-
-    }catch(error){
-      const errorMessage='Could not auth you.Please try again later.';
+    } catch (error) {
+      const errorMessage = 'Could not auth you.Please try again later.';
       _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
     });
   }
-
-
 
   //   void validateAndSave() {
   //   final FormState form = _formKey.currentState;
@@ -87,8 +73,6 @@ class _AuthCardState extends State<AuthCard> {
   //     print('Form is invalid');
   //   }
   // }
- 
-
 
   void _switchAuthMode() {
     if (_authMode == AuthMode.Login) {
@@ -102,26 +86,21 @@ class _AuthCardState extends State<AuthCard> {
     }
   }
 
-  void _showErrorDialog(String message){
-    showDialog(context: context,
-     builder: (ctx)=>AlertDialog(
-       title: Text('An error Ocurred!'),
-       content: Text(message),
-       actions:<Widget> [
-         FlatButton(
-           onPressed: (){
-             Navigator.of(ctx).pop();
-           },
-          child: Text('okay'))
-
-
-
-       ],
-
-
-     ));
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('An error Ocurred!'),
+              content: Text(message),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text('okay'))
+              ],
+            ));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -143,56 +122,45 @@ class _AuthCardState extends State<AuthCard> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-
                 if (_authMode == AuthMode.Signup)
-                TextFormField(
-                  
-                  decoration: InputDecoration(labelText: 'Enter Your name'),
-                  keyboardType: TextInputType.name,
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Enter Your name'),
+                    keyboardType: TextInputType.name,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'please enter your name!';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _authData['username'] = value;
+                    },
+                  ),
+
+                IntlPhoneField(
+                  decoration: InputDecoration(
+                    labelText: 'Phone Number',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(),
+                    ),
+                  ),
+                  initialCountryCode: 'IN',
+                  onChanged: (phone) {
+                    print(phone.completeNumber);
+                    _authData['phone'] = phone.completeNumber.toString();
+                  },
                   validator: (value) {
-                    if (value.isEmpty ) {
-                      return 'please enter your name!';
+                    if (value.isEmpty) {
+                      return 'please enter a number!';
                     }
                     return null;
-                    
                   },
                   onSaved: (value) {
-                    _authData['username'] = value;
+                    // _authData['phone'] = value.toString();
                   },
                 ),
 
-               
-                  IntlPhoneField(
-                         decoration: InputDecoration(
-                                 labelText: 'Phone Number',
-                                 border: OutlineInputBorder(
-                                 borderSide: BorderSide(),
-                             ),  
-                             ),
-                          initialCountryCode: 'IN',
-                         onChanged: (phone) {
-                         print(phone.completeNumber);
-                         _authData['phone'] = phone.completeNumber.toString();
-                         },
-                      validator: (value) {
-                      if (value.isEmpty ) {
-                        return 'please enter a number!';
-                      }
-                      return null;
-                      
-                    },
-                    onSaved: (value){
-                     // _authData['phone'] = value.toString();
-
-                    },
-                 ),
-                 
-                  
-                  
-                
-
-
-               // if (_authMode == AuthMode.Signup)
+                // if (_authMode == AuthMode.Signup)
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
@@ -201,7 +169,6 @@ class _AuthCardState extends State<AuthCard> {
                       return 'Invalid email!';
                     }
                     return null;
-                    
                   },
                   onSaved: (value) {
                     _authData['email'] = value;
@@ -230,7 +197,7 @@ class _AuthCardState extends State<AuthCard> {
                     obscureText: true,
                     keyboardType: TextInputType.number,
                     validator: _authMode == AuthMode.Signup
-                        
+
                         // ignore: missing_return
                         ? (value) {
                             if (value != _passwordController.text) {
@@ -248,7 +215,7 @@ class _AuthCardState extends State<AuthCard> {
                   RaisedButton(
                     child:
                         Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                    onPressed:_submit ,
+                    onPressed: _submit,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

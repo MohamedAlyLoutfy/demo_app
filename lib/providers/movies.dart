@@ -16,14 +16,13 @@ class Movies with ChangeNotifier {
   List<Movie> _items = [];
 
   Future<void> fetchmovies2(String userId) async {
-    //await getlocal();
     if (_items.isEmpty == false) {
       return;
     }
     for (int i = 500; i < 510; i++) {
       await fetchmovies(i.toString(), userId);
     }
-   // getlocal();
+    getlocal();
   }
 
   List<Movie> get favoriteItems {
@@ -67,10 +66,12 @@ class Movies with ChangeNotifier {
                 false);
 
     _items.add(newMovie);
-    if (favoriteData[id] == true) {
-      await savelocal(id, userId, 'true');
+    if (favoriteData == null) {
+      savelocal(movid, userId, 'false');
+    } else if (favoriteData[movid] == true) {
+      savelocal(movid, userId, 'true');
     } else {
-      await savelocal(id, userId, 'false');
+      savelocal(movid, userId, 'false');
     }
 
     //notifyListeners();
@@ -96,6 +97,6 @@ class Movies with ChangeNotifier {
     final dataList = await DBHelper.getData('user_movies');
     //print('locaall');
 
-    //print(dataList);
+   // print(dataList);
   }
 }

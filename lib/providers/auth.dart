@@ -50,9 +50,8 @@ class Auth with ChangeNotifier {
         Duration(
           seconds: int.parse(responseData['expiresIn']),
         ),
-        
       );
-    
+
       if (urlSegment == 'signUp') {
         onregister(password, phone);
       }
@@ -68,7 +67,6 @@ class Auth with ChangeNotifier {
     } catch (error) {
       throw error;
     }
-    
   }
 
   Future<void> signup(String email, String password, String phone) async {
@@ -112,7 +110,7 @@ class Auth with ChangeNotifier {
   Future<void> onregister(String password, String phone) async {
     final url =
         'https://demoapp-90b94-default-rtdb.firebaseio.com/users.json?auth=$_token';
-    print('herelogup');
+
     await http.post(Uri.parse(url),
         body: json
             .encode({'userid': _userId, 'phone': phone, 'password': password}));
@@ -122,7 +120,7 @@ class Auth with ChangeNotifier {
     final filterString = 'orderBy="userid"&equalTo="$userId"';
     final url =
         'https://demoapp-90b94-default-rtdb.firebaseio.com/users.json?auth=$token&$filterString';
-    
+
     final response = await http.get(Uri.parse(url));
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     //print(extractedData);
@@ -139,6 +137,4 @@ class Auth with ChangeNotifier {
     });
     return a;
   }
-
-
 }
