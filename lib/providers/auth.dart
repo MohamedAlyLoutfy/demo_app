@@ -119,7 +119,7 @@ class Auth with ChangeNotifier {
     final filterString = 'orderBy="userid"&equalTo="$userId"';
     final url =
         'https://demoapp-90b94-default-rtdb.firebaseio.com/users.json?auth=$token&$filterString';
-    print('herelogup');
+    
     final response = await http.get(Uri.parse(url));
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     //print(extractedData);

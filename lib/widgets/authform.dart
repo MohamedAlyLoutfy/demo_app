@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -34,6 +35,7 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
+    try{
     if (_authMode == AuthMode.Login) {
       await Provider.of<Auth>(context,listen: false).signin(
 
@@ -48,6 +50,27 @@ class _AuthCardState extends State<AuthCard> {
          _authData['password'],
          _authData['phone']
          );
+    }} on HttpException catch(error){
+      var errorMessage='Authentication failed';
+      if(error.toString().contains('EMAIL_EXISTS')){
+        errorMessage='This email address is already in use';
+      }else if (error.toString().contains('INVALID_EMAIL')){
+        errorMessage='This is not a valid email address';
+      }
+      else if (error.toString().contains('WEAK_PASSWORD')){
+        errorMessage='This password is too weak';
+      }
+      else if (error.toString().contains('EMAIL_NOT_FOUND')){
+        errorMessage='Could not find a user with that email';
+      }
+      else if (error.toString().contains('INVALID_PASSWORD')){
+        errorMessage='Invalid password';
+      }
+      _showErrorDialog(errorMessage);
+
+    }catch(error){
+      const errorMessage='Could not auth you.Please try again later.';
+      _showErrorDialog(errorMessage);
     }
     setState(() {
       _isLoading = false;
@@ -78,6 +101,27 @@ class _AuthCardState extends State<AuthCard> {
       });
     }
   }
+
+  void _showErrorDialog(String message){
+    showDialog(context: context,
+     builder: (ctx)=>AlertDialog(
+       title: Text('An error Ocurred!'),
+       content: Text(message),
+       actions:<Widget> [
+         FlatButton(
+           onPressed: (){
+             Navigator.of(ctx).pop();
+           },
+          child: Text('okay'))
+
+
+
+       ],
+
+
+     ));
+  }
+
 
   @override
   Widget build(BuildContext context) {

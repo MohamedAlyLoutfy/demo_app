@@ -9,12 +9,12 @@ class Movies with ChangeNotifier {
   List<Movie> _items = [];
 
   Future<void> fetchmovies2(String userId) async {
+    if (_items.isEmpty == false) {
+      return;
+    }
     for (int i = 500; i < 510; i++) {
       await fetchmovies(i.toString(), userId);
     }
-    // await fetchmovies('550');
-    // await  fetchmovies('500');
-    // await  fetchmovies('501');
   }
 
   List<Movie> get favoriteItems {
