@@ -52,7 +52,7 @@ class MovieItem  extends StatelessWidget {
                 
                 color: Theme.of(context).accentColor,
                 onPressed: () {
-                  movie.toggleFavoriteState();
+                  movie.toggleFavoriteState(userdata.token,userdata.userId);
                   
                 },
                 

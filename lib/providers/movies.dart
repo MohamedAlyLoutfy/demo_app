@@ -6,6 +6,12 @@ import 'package:provider/provider.dart';
 import '../models/movie.dart';
 
 class Movies with ChangeNotifier {
+  final String authToken;
+  final String userId;
+  Movies(
+    this.authToken,
+    this.userId,
+  );
   List<Movie> _items = [];
 
   Future<void> fetchmovies2(String userId) async {
@@ -40,6 +46,10 @@ class Movies with ChangeNotifier {
 
     ///print(link);
 //print(url1);
+    final url2 =
+        'https://demoapp-90b94-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
+    final favoriteResponse = await http.get(Uri.parse(url2));
+    final favoriteData = json.decode(favoriteResponse.body);
 
     final newMovie = Movie(
         id: json.decode(response.body)['id'].toString(),
@@ -47,7 +57,11 @@ class Movies with ChangeNotifier {
         imageUrl: url1,
         description: json.decode(response.body)['overview'],
         rating: json.decode(response.body)['vote_average'].toString(),
-        link: link);
+        link: link,
+        isFavorite: favoriteData == null
+            ? false
+            : favoriteData[json.decode(response.body)['id'].toString()] ??
+                false);
 
     _items.add(newMovie);
 

@@ -111,9 +111,7 @@ class MovieDetailScreen extends StatelessWidget {
                   ),
                 ),
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                onRatingUpdate: (rating) {
-                  print(rating);
-                },
+               onRatingUpdate: (_){},
               ),
               SizedBox(
                 height: 10,
