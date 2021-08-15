@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_complete_guide/models/http_exception.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,13 +35,16 @@ class Auth with ChangeNotifier {
           ));
       //print(phone);
       final responseData = json.decode(response.body);
+      if (responseData['error'] != null) {
+        throw HttpException(responseData['error']['message']);
+      }
+
       //print(responseData);
       if (urlSegment == 'signInWithPassword') {
         var a = await onlogin(
             phone, responseData['idToken'], responseData['localId']);
         if (a == 'wrong') {
-          print('wrong number');
-          return;
+          throw HttpException('Wrong number');
         }
       }
 

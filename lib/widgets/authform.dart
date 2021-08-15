@@ -79,6 +79,8 @@ class _AuthCardState extends State<AuthCard>
         errorMessage = 'Could not find a user with that email';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
         errorMessage = 'Invalid password';
+      }else if (error.toString().contains('Wrong number')) {
+        errorMessage = 'Wrong number,Please re-enter the correct phone number';
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
